@@ -16,9 +16,9 @@ pub struct VfsNodeAttr {
     size: u64,
     /// Number of 512B blocks allocated.
     blocks: u64,
-    /// inode最后一次被访问的时间
+    /// inode Access Time
     atime: usize,
-    /// inode最后一次修改的时间
+    /// inode Modify Time
     mtime: usize,
 }
 
@@ -255,19 +255,23 @@ impl VfsNodeAttr {
     }
 
     /// Returns the atime of the node.
-    pub const fn atime(&self) -> VfsNodePerm {
-        self.mode
+    pub const fn atime(&self) -> usize {
+        self.atime
     }
 
     /// Returns the mtime of the node.
-    pub const fn mtime(&self) -> VfsNodePerm {
-        self.mode
+    pub const fn mtime(&self) -> usize {
+        self.mtime
     }
 
-    /// Sets the utime of the node.
-    pub fn set_utime(&mut self, atime: usize, mtime: usize) {
+    /// Sets the atime of the node.
+    pub fn set_atime(&mut self, atime: usize) {
         self.atime = atime;
-        self.mtime = mtime;
+    }
+
+    /// Sets the atime of the node.
+    pub fn set_utime(&mut self, utime: usize) {
+        self.utime = utime;
     }
 
     /// Sets the permission of the node.
