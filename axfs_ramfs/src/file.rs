@@ -23,9 +23,9 @@ impl FileNode {
 
 impl VfsNodeOps for FileNode {
     fn get_attr(&self) -> VfsResult<VfsNodeAttr> {
-        let attr = VfsNodeAttr::new_file(self.content.read().len() as _, 0);
-        attr.set_atime(atime);
-        attr.set_mtime(mtime);
+        let mut attr = VfsNodeAttr::new_file(self.content.read().len() as _, 0);
+        attr.set_atime(self.atime);
+        attr.set_mtime(self.mtime);
         Ok(attr)
     }
 
@@ -59,12 +59,12 @@ impl VfsNodeOps for FileNode {
         Ok(buf.len())
     }
 
-    fn set_atime(&self, atime: usize) -> VfsResult {
+    fn set_atime(&mut self, atime: usize) -> VfsResult {
         self.atime = atime;
         Ok(())
     }
 
-    fn set_mtime(&self, mtime: usize) -> VfsResult {
+    fn set_mtime(&mut self, mtime: usize) -> VfsResult {
         self.mtime = mtime;
         Ok(())
     }
