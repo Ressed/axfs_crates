@@ -122,8 +122,13 @@ pub trait VfsNodeOps: Send + Sync {
         ax_err!(InvalidInput)
     }
 
-    /// Set atime & mtime
-    fn set_utime(&self, _atime: usize, _mtime: usize) -> VfsResult  {
+    /// Set atime
+    fn set_atime(&self, _atime: usize) -> VfsResult  {
+        ax_err!(InvalidInput)
+    }
+
+    /// Set mtime
+    fn set_mtime(&self, _mtime: usize) -> VfsResult  {
         ax_err!(InvalidInput)
     }
 
