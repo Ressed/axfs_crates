@@ -122,6 +122,11 @@ pub trait VfsNodeOps: Send + Sync {
         ax_err!(InvalidInput)
     }
 
+    /// Set atime & mtime
+    fn set_utime(&self, _atime: usize, _mtime: usize) -> VfsResult  {
+        ax_err!(InvalidInput)
+    }
+
     // directory operations:
 
     /// Get the parent directory of this directory.

@@ -16,6 +16,10 @@ pub struct VfsNodeAttr {
     size: u64,
     /// Number of 512B blocks allocated.
     blocks: u64,
+    /// inode最后一次被访问的时间
+    atime: usize,
+    /// inode最后一次修改的时间
+    mtime: usize,
 }
 
 bitflags::bitflags! {
@@ -205,6 +209,8 @@ impl VfsNodeAttr {
             ty,
             size,
             blocks,
+            atime: 0,
+            mtime: 0,
         }
     }
 
@@ -215,6 +221,8 @@ impl VfsNodeAttr {
             ty: VfsNodeType::File,
             size,
             blocks,
+            atime: 0,
+            mtime: 0,
         }
     }
 
@@ -226,6 +234,8 @@ impl VfsNodeAttr {
             ty: VfsNodeType::Dir,
             size,
             blocks,
+            atime: 0,
+            mtime: 0,
         }
     }
 
