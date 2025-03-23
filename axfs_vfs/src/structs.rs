@@ -270,8 +270,8 @@ impl VfsNodeAttr {
     }
 
     /// Sets the atime of the node.
-    pub fn set_utime(&mut self, utime: usize) {
-        self.utime = utime;
+    pub fn set_mtime(&mut self, mtime: usize) {
+        self.mtime = mtime;
     }
 
     /// Sets the permission of the node.
