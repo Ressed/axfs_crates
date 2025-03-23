@@ -254,6 +254,22 @@ impl VfsNodeAttr {
         self.mode
     }
 
+    /// Returns the atime of the node.
+    pub const fn atime(&self) -> VfsNodePerm {
+        self.mode
+    }
+
+    /// Returns the mtime of the node.
+    pub const fn mtime(&self) -> VfsNodePerm {
+        self.mode
+    }
+
+    /// Sets the utime of the node.
+    pub fn set_utime(&mut self, atime: usize, mtime: usize) {
+        self.atime = atime;
+        self.mtime = mtime;
+    }
+
     /// Sets the permission of the node.
     pub fn set_perm(&mut self, perm: VfsNodePerm) {
         self.mode = perm
