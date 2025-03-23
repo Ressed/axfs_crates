@@ -7,6 +7,10 @@ use spin::RwLock;
 /// It implements [`axfs_vfs::VfsNodeOps`].
 pub struct FileNode {
     content: RwLock<Vec<u8>>,
+    metadata: RwLock<Metadata>,
+}
+
+struct Metadata {
     atime: usize,
     mtime: usize,
 }
@@ -15,8 +19,7 @@ impl FileNode {
     pub(super) const fn new() -> Self {
         Self {
             content: RwLock::new(Vec::new()),
-            atime: 0,
-            mtime: 0,
+            metadata: RwLock::new(Metadata { atime: 0, mtime: 0 }),
         }
     }
 }
@@ -24,8 +27,9 @@ impl FileNode {
 impl VfsNodeOps for FileNode {
     fn get_attr(&self) -> VfsResult<VfsNodeAttr> {
         let mut attr = VfsNodeAttr::new_file(self.content.read().len() as _, 0);
-        attr.set_atime(self.atime);
-        attr.set_mtime(self.mtime);
+        let metadata = self.metadata.read();
+        attr.set_atime(metadata.atime);
+        attr.set_mtime(metadata.mtime);
         Ok(attr)
     }
 
@@ -59,13 +63,15 @@ impl VfsNodeOps for FileNode {
         Ok(buf.len())
     }
 
-    fn set_atime(&mut self, atime: usize) -> VfsResult {
-        self.atime = atime;
+    fn set_atime(&self, atime: usize) -> VfsResult {
+        let mut metadata = self.metadata.write();
+        metadata.atime = atime;
         Ok(())
     }
 
-    fn set_mtime(&mut self, mtime: usize) -> VfsResult {
-        self.mtime = mtime;
+    fn set_mtime(&self, mtime: usize) -> VfsResult {
+        let mut metadata = self.metadata.write();
+        metadata.mtime = mtime;
         Ok(())
     }
 
