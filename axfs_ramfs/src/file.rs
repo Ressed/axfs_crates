@@ -7,19 +7,26 @@ use spin::RwLock;
 /// It implements [`axfs_vfs::VfsNodeOps`].
 pub struct FileNode {
     content: RwLock<Vec<u8>>,
+    atime: usize,
+    mtime: usize,
 }
 
 impl FileNode {
     pub(super) const fn new() -> Self {
         Self {
             content: RwLock::new(Vec::new()),
+            atime: 0,
+            mtime: 0,
         }
     }
 }
 
 impl VfsNodeOps for FileNode {
     fn get_attr(&self) -> VfsResult<VfsNodeAttr> {
-        Ok(VfsNodeAttr::new_file(self.content.read().len() as _, 0))
+        let attr = VfsNodeAttr::new_file(self.content.read().len() as _, 0);
+        attr.set_atime(atime);
+        attr.set_mtime(mtime);
+        Ok(attr)
     }
 
     fn truncate(&self, size: u64) -> VfsResult {
@@ -50,6 +57,16 @@ impl VfsNodeOps for FileNode {
         let dst = &mut content[offset..offset + buf.len()];
         dst.copy_from_slice(&buf[..dst.len()]);
         Ok(buf.len())
+    }
+
+    fn set_atime(&self, atime: usize) -> VfsResult {
+        self.atime = atime;
+        Ok(())
+    }
+
+    fn set_mtime(&self, mtime: usize) -> VfsResult {
+        self.mtime = mtime;
+        Ok(())
     }
 
     impl_vfs_non_dir_default! {}
